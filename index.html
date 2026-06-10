@@ -41,7 +41,7 @@
     <!-- Navbar -->
     <nav class="flex justify-between items-center p-6 bg-black/80 sticky top-0 z-50 backdrop-blur-md border-b border-yellow-900">
         <div class="text-2xl font-gaming font-bold text-yellow-400 tracking-widest uppercase">
-            Vizeo <span id="api-status" class="status-badge bg-gray-600 text-white">Checking...</span>
+            Vizeo <span id="api-status" class="status-badge bg-gray-600 text-white">Checking faceit API...</span>
         </div>
         <ul class="hidden md:flex space-x-8 font-medium uppercase tracking-tighter">
             <li><a href="#home" class="hover:text-yellow-400 transition">Accueil</a></li>
@@ -49,7 +49,6 @@
             <li><a href="#stats" class="hover:text-yellow-400 transition">Performances</a></li>
             <li><a href="#matches" class="hover:text-yellow-400 transition">Matchs</a></li>
         </ul>
-        <button class="bg-yellow-500 hover:bg-yellow-600 text-black px-4 py-2 rounded font-bold uppercase text-sm transition">Recrutement</button>
     </nav>
 
     <!-- Hero Section -->
@@ -171,11 +170,11 @@
 
         function loadSimulationData() {
             const mockPlayers = [
-                { name: "-ExTaZz_", avatar: "", elo: , winRate: , kd:  },
+                { name: "-ExTaZz_", avatar: "", elo: "", winRate: "", kd: "" },
                 { name: "NoVadyM", avatar: "", elo: , winRate: , kd:  },
                 { name: "ShoZa", avatar: "", elo: , winRate: , kd:  },
                 { name: "Whrite", avatar: "", elo: , winRate: , kd:  },
-                { name: "-mqxime-", avatar: "", elo: , winRate: , kd:  }
+                { name: "-mqxime-", avatar: "", elo: , winRate: , kd:  },
             ];
             renderData(mockPlayers);
         }
