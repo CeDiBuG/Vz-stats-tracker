@@ -63,6 +63,9 @@
                 logoImg.classList.remove('hidden');
 
                 renderPlayers(data.members);
+            } catch (error) {
+                console.error(error);
+                loadSimulation();
             }
         }
 
