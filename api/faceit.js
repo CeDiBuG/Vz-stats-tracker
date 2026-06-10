@@ -20,7 +20,7 @@ export default async function handler(req, res) {
 
         const playerDetailsPromises = teamData.members.map(async (member) => {
             try {
-                const pRes = await fetch(`https://api.faceit.com/players/${member.user_id}`, { 
+                const pRes = await fetch(`https://open.faceit.com/data/v4/players/${member.user_id}`, { 
                     headers: { "Authorization": `Bearer ${API_KEY}` } 
                 });
                 const pData = await pRes.json();
@@ -32,7 +32,6 @@ export default async function handler(req, res) {
                     elo: pData.game_stats.cs2.lifetime.elo,
                     winRate: pData.game_stats.cs2.lifetime.win_rate,
                     kd: pData.game_stats.cs2.lifetime.kd,
-                    role: "Pro Player" // Le rôle n'est pas dans l'API Faceit
                 };
             } catch (e) {
                 return { nickname: member.nickname, avatar: member.avatar, elo: "N/A", winRate: 0, kd: 0 };
