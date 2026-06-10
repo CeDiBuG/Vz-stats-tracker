@@ -14,13 +14,14 @@
         .card-gradient { background: linear-gradient(145deg, #111827, #1f2937); }
     </style>
 </head>
-<body>
+<body class="overflow-x-hidden">
 
     <nav class="flex justify-between items-center p-6 bg-black/80 sticky top-0 z-50 backdrop-blur-md border-b border-yellow-900">
         <div class="text-2xl font-gaming font-bold text-yellow-400 tracking-widest uppercase">Vizeo</div>
         <ul class="hidden md:flex space-x-8 font-medium uppercase tracking-tighter">
             <li><a href="#home" class="hover:text-yellow-400 transition">Accueil</a></li>
             <li><a href="#roster" class="hover:text-yellow-400 transition">Équipe</a></li>
+            <li><a href="#stats" class="hover:text-yellow-400 transition">Stats</a></li>
             <li><a href="#matches" class="hover:text-yellow-400 transition">Matchs</a></li>
         </ul>
     </nav>
@@ -33,15 +34,64 @@
         <div class="relative z-10">
             <img id="team-logo" src="" class="w-32 h-32 rounded-full mx-auto mb-6 border-4 border-yellow-500 shadow-lg hidden">
             <h1 class="text-6xl md:text-8xl font-gaming font-bold mb-4 italic uppercase"><span id="team-name">Vizeo</span></h1>
-            <p class="text-lg text-gray-400 tracking-widest uppercase mb-8">Counter-Strike 2</p>
+            <p class="text-lg text-gray-400 tracking-widest uppercase mb-8">Counter-Strike 2 Elite Division</p>
             <a href="#roster" class="neon-border px-8 py-3 bg-transparent text-yellow-400 font-gaming font-bold hover:bg-yellow-500 hover:text-black transition duration-300 uppercase">Voir le Roster</a>
         </div>
     </section>
 
-    <section id="roster" class="py-20 px-6 max-w-7xl mx-auto text-center">
+    <!-- STATS GLOBAL SECTION -->
+    <section id="stats" class="py-20 px-6 max-w-7xl mx-auto text-center">
+        <h2 class="text-4xl font-gaming mb-16 italic underline decoration-yellow-500 underline-offset-8 uppercase tracking-tighter">Performances Globales</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
+            <div class="card-gradient p-8 rounded-xl border border-yellow-900 shadow-lg">
+                <i class="fas fa-trophy text-4xl text-yellow-500 mb-4"></i>
+                <p class="text-gray-400 uppercase text-sm">Win Rate Team</p>
+                <h3 id="global-winrate" class="text-4xl font-gaming font-bold text-white">--%</h3>
+            </div>
+            <div class="card-gradient p-8 rounded-xl border border-yellow-900 shadow-lg">
+                <i class="fas fa-gamepad text-4xl text-yellow-500 mb-4"></i>
+                <p class="text-gray-400 uppercase text-sm">Matches Joués</p>
+                <h3 id="global-matches" class="text-4xl font-gaming font-bold text-white">--</h3>
+            </div>
+            <div class="card-gradient p-8 rounded-xl border border-yellow-900 shadow-lg">
+                <i class="fas fa-crown text-4xl text-yellow-500 mb-4"></i>
+                <p class="text-gray-400 uppercase text-sm">Rang Équipe</p>
+                <h3 id="global-rank" class="text-4xl font-gaming font-bold text-white">--</h3>
+            </div>
+        </div>
+
+        <!-- Individual Table -->
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse bg-black/40 rounded-lg overflow-hidden shadow-2xl">
+                <thead class="bg-yellow-900 text-white uppercase font-gaming text-sm">
+                    <tr>
+                        <th class="p-4">Joueur</th>
+                        <th class="p-4 text-center">Elo Faceit</th>
+                        <th class="p-4 text-center">Win Rate</th>
+                        <th class="p-4 text-center">K/D Ratio</th>
+                    </tr>
+                </thead>
+                <tbody id="stats-body" class="divide-y divide-yellow-900/50"></tbody>
+            </table>
+        </div>
+    </section>
+
+    <section id="roster" class="py-20 px-6 max-w-7xl mx-auto text-center bg-[#0d0d10]">
         <h2 class="text-4xl font-gaming mb-16 italic underline decoration-yellow-500 underline-offset-8 uppercase tracking-tighter">Le Roster</h2>
-        <div id="player-container" class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6">
-            <p class="text-center col-span-full text-gray-500 animate-pulse font-gaming uppercase italic">Chargement des joueurs...</p>
+        <div id="player-container" class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6"></div>
+    </section>
+
+    <section id="matches" class="py-20 px-6 max-w-7xl mx-auto text-center">
+        <h2 class="text-4xl font-gaming mb-16 italic underline decoration-yellow-500 underline-offset-8 uppercase tracking-tighter">Matchs</h2>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 text-left">
+            <div>
+                <h3 class="text-2xl font-gaming mb-6 uppercase text-yellow-500"><i class="fas fa-history mr-2"></i>Derniers Résultats</h3>
+                <div id="last-matches" class="space-y-4"></div>
+            </div>
+            <div>
+                <h3 class="text-2xl font-gaming mb-6 uppercase text-yellow-500"><i class="fas fa-calendar-alt mr-2"></i>Prochains Défis</h3>
+                <div id="next-matches" class="space-y-4"></div>
+            </div>
         </div>
     </section>
 
@@ -50,49 +100,6 @@
     </footer>
 
     <script>
-        async function init() {
-            try {
-                const response = await fetch('/api/faceit');
-                if (!response.ok) throw new Error("Erreur serveur");
-
-                const data = await response.json();
-
-                document.getElementById('team-name').innerText = data.name;
-                const logoImg = document.getElementById('team-logo');
-                logoImg.src = data.avatar;
-                logoImg.classList.remove('hidden');
-
-                renderPlayers(data.members);
-            } catch (error) {
-                console.error(error);
-                loadSimulation();
-            }
-        }
-
-        function renderPlayers(members) {
-            const container = document.getElementById('player-container');
-            container.innerHTML = ""; 
-
-            members.forEach(m => {
-                container.innerHTML += `
-                    <div class="card-gradient p-4 rounded-xl text-center border border-transparent hover:border-yellow-500 transition duration-300 group">
-                        <img src="${m.avatar}" class="w-24 h-24 rounded-full mx-auto mb-4 border-4 border-gray-800 group-hover:border-yellow-500 transition" alt="${m.nickname}">
-                        <h3 class="text-xl font-gaming font-bold uppercase">${m.nickname}</h3>
-                        <p class="text-yellow-400 text-sm uppercase mb-2 italic">Pro Player</p>
-                    </div>
-                `;
-            });
-        }
-
-        function loadSimulation() {
-            const mock = [
-                { nickname: "Player 1", avatar: "" },
-                { nickname: "Player 2", avatar: "" }
-            ];
-            renderPlayers(mock);
-        }
-
-        window.onload = init;
-    </script>
-</body>
+        // MATCHS (Manuels car non disponibles via l'API Faceit)
+        const LAST_MATCHES = [
 </html>
