@@ -8,179 +8,93 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@300;500;700&display=swap');
-
-        body {
-            background-color: #0a0a0c;
-            color: #e2e8f0;
-            font-family: 'Rajdhani', sans-serif;
-            scroll-behavior: smooth;
-        }
+        body { background-color: #0a0a0c; color: #e2e8f0; font-family: 'Rajdhani', sans-serif; scroll-behavior: smooth; }
         .font-gaming { font-family: 'Orbitron', sans-serif; }
-        
-        .neon-border {
-            box-shadow: 0 0 10px #eab308, 0 0 20px #eab308;
-            border: 1px solid #eab308;
-        }
-
-        .card-gradient {
-            background: linear-gradient(145deg, #111827, #1f2937);
-        }
-
-        .status-badge {
-            font-size: 0.6rem;
-            padding: 2px 8px;
-            border-radius: 10px;
-            text-transform: uppercase;
-            margin-left: 10px;
-            vertical-align: middle;
-        }
+        .neon-border { box-shadow: 0 0 10px #eab308, 0 0 20px #eab308; border: 1px solid #eab308; }
+        .card-gradient { background: linear-gradient(145deg, #111827, #1f2937); }
     </style>
 </head>
-<body class="overflow-x-hidden">
+<body>
 
-    <!-- Navbar -->
     <nav class="flex justify-between items-center p-6 bg-black/80 sticky top-0 z-50 backdrop-blur-md border-b border-yellow-900">
-        <div class="text-2xl font-gaming font-bold text-yellow-400 tracking-widest uppercase">
-            Vizeo <span id="api-status" class="status-badge bg-gray-600 text-white">Checking faceit API...</span>
-        </div>
+        <div class="text-2xl font-gaming font-bold text-yellow-400 tracking-widest uppercase">Vizeo</div>
         <ul class="hidden md:flex space-x-8 font-medium uppercase tracking-tighter">
             <li><a href="#home" class="hover:text-yellow-400 transition">Accueil</a></li>
             <li><a href="#roster" class="hover:text-yellow-400 transition">Équipe</a></li>
-            <li><a href="#stats" class="hover:text-yellow-400 transition">Performances</a></li>
             <li><a href="#matches" class="hover:text-yellow-400 transition">Matchs</a></li>
         </ul>
+        <button class="bg-yellow-500 hover:bg-yellow-600 text-black px-4 py-2 rounded font-bold uppercase text-sm transition">Recrutement</button>
     </nav>
 
-    <!-- Hero Section -->
-    <section id="home" class="relative h-[80vh] flex items-center justify-center overflow-hidden border-b border-yellow-900">
-        <div class="absolute inset-0 z-0">
-            <img src="https://distribution.faceit-cdn.net/images/c6e899fa-8e39-48f6-9e1b-ebbea950ca7b.jpg" class="w-full h-full object-cover opacity-30 grayscale hover:grayscale-0 transition duration-700" alt="Gaming background">
+    <section id="home" class="relative h-[70vh] flex items-center justify-center overflow-hidden border-b border-yellow-900 text-center px-4">
+        <div class="absolute inset-0 z-0 opacity-30 grayscale">
+            <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=1350&q=80" class="w-full h-full object-cover">
             <div class="absolute inset-0 bg-gradient-to-t from-[#0a0a0c] via-transparent to-transparent"></div>
         </div>
-        
-        <div class="relative z-10 text-center px-4">
-            <h1 class="text-6xl md:text-8xl font-gaming font-bold mb-4 tracking-tighter italic uppercase">Vizeo <span class="text-yellow-500">Multigaming</span></h1>
-            <p class="text-xl md:text-2xl mb-8 text-gray-400 uppercase tracking-widest italic">Elite Competitive Division</p>
-            <a href="#roster" class="neon-border px-8 py-3 bg-transparent text-yellow-400 font-gaming font-bold hover:bg-yellow-500 hover:text-black transition duration-300 uppercase">Voir les équipes</a>
+        <div class="relative z-10">
+            <!-- Logo de l'équipe récupéré dynamiquement -->
+            <img id="team-logo" src="" class="w-32 h-32 rounded-full mx-auto mb-6 border-4 border-yellow-500 shadow-lg hidden">
+            <h1 class="text-6xl md:text-8xl font-gaming font-bold mb-4 italic uppercase"><span id="team-name">Vizeo</span> <span class="text-yellow-500">Esport</span></h1>
+            <p class="text-lg text-gray-400 tracking-widest uppercase mb-8">Elite Competitive Division</p>
+            <a href="#roster" class="neon-border px-8 py-3 bg-transparent text-yellow-400 font-gaming font-bold hover:bg-yellow-500 hover:text-black transition duration-300 uppercase">Voir le Roster</a>
         </div>
     </section>
 
-    <!-- Roster Section -->
     <section id="roster" class="py-20 px-6 max-w-7xl mx-auto text-center">
         <h2 class="text-4xl font-gaming mb-16 italic underline decoration-yellow-500 underline-offset-8 uppercase tracking-tighter">Le Roster</h2>
-        <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6" id="player-container">
-            <!-- Loading State -->
-            <p class="text-center col-span-full text-gray-500 animate-pulse font-gaming uppercase italic">Synchronisation avec Faceit...</p>
+        <div id="player-container" class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6">
+            <p class="text-center col-span-full text-gray-500 animate-pulse font-gaming uppercase italic">Chargement des joueurs...</p>
         </div>
     </section>
 
-    <!-- Team Stats Dashboard -->
-    <section id="team-stats" class="py-10 px-6 max-w-7xl mx-auto">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center font-gaming">
-            <div class="card-gradient p-6 rounded-xl border border-yellow-900 shadow-lg">
-                <p class="text-gray-400 uppercase text-sm mb-2">Win Rate</p>
-                <h3 id="stat-winrate" class="text-4xl font-bold text-yellow-500">--%</h3>
-            </div>
-            <div class="card-gradient p-6 rounded-xl border border-yellow-900 shadow-lg">
-                <p class="text-gray-400 uppercase text-sm mb-2">Matches Joués</p>
-                <h3 id="stat-matches" class="text-4xl font-bold text-yellow-500">--</h3>
-            </div>
-            <div class="card-gradient p-6 rounded-xl border border-yellow-900 shadow-lg">
-                <p class="text-gray-400 uppercase text-sm mb-2">Rang Équipe</p>
-                <h3 id="stat-rank" class="text-4xl font-bold text-yellow-500">--</h3>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="bg-black py-10 border-t border-yellow-900 text-center">
-        <div class="text-2xl font-gaming font-bold text-yellow-400 mb-4 uppercase tracking-widest">VIZEO</div>
-        <div class="flex justify-center space-x-6 text-2xl mb-6">
-            <a href="#" class="hover:text-yellow-500 transition"><i class="fab fa-twitter"></i></a>
-            <a href="#" class="hover:text-yellow-500 transition"><i class="fab fa-twitch"></i></a>
-            <a href="#" class="hover:text-yellow-500 transition"><i class="fab fa-discord"></i></a>
-        </div>
-        <p class="text-gray-600 text-sm">&copy; 2023 Vizeo Multigaming. All rights reserved.</p>
+    <footer class="bg-black py-10 border-t border-yellow-900 text-center text-gray-600 uppercase text-xs font-gaming">
+        Vizeo Gaming &copy; 2023 - Powered by Faceit API
     </footer>
 
     <script>
-        /**
-         * LOGIQUE D'INTÉGRATION VERCEL / FACEIT
-         */
         async function init() {
             try {
                 const response = await fetch('/api/faceit');
+                if (!response.ok) throw new Error("Erreur serveur");
+
                 const data = await response.json();
-        
-                if (data.apiStatus === "DOWN") {
-                    loadSimulationData();
-                    updateStatus(false);
-                    return;
-                }
-        
-                // 1. Mise à jour des Stats Globales de l'équipe
-                if (data.teamStats && data.teamStats.lifetime) {
-                    const stats = data.teamStats.lifetime;
-                    document.getElementById('stat-winrate').innerText = (stats.win_rate * 100).toFixed(1) + "%";
-                    document.getElementById('stat-matches').innerText = stats.matches_played || "0";
-                    document.getElementById('stat-rank').innerText = stats.rank || "N/A";
-                }
-        
-                // 2. Mise à jour du Roster (si disponible)
-                if (data.members) {
-                    const players = data.members.map(m => ({
-                        name: m.player_id, 
-                        avatar: `https://i.pravatar.cc/150?u=${m.player_id}`, 
-                        elo: "...", winRate: 0, kd: 0
-                    }));
-                    renderData(players);
-                }
-        
-                updateStatus(true);
+
+                // 1. Affichage du nom et logo de l'équipe
+                document.getElementById('team-name').innerText = data.name;
+                const logoImg = document.getElementById('team-logo');
+                logoImg.src = data.avatar;
+                logoImg.classList.remove('hidden');
+
+                // 2. Affichage des joueurs (Utilisation de nickname et avatar)
+                renderPlayers(data.members);
+
             } catch (error) {
-                loadSimulationData();
-                updateStatus(false);
+                console.error("Erreur:", error);
+                loadSimulation();
             }
         }
 
-        function renderData(players) {
+        function renderPlayers(members) {
             const container = document.getElementById('player-container');
-            const statsBody = document.getElementById('stats-body');
-            
             container.innerHTML = ""; 
-            statsBody.innerHTML = "";
 
-            players.forEach(p => {
-                // Roster Cards
+            members.forEach(m => {
                 container.innerHTML += `
                     <div class="card-gradient p-4 rounded-xl text-center border border-transparent hover:border-yellow-500 transition duration-300 group">
-                        <img src="${p.avatar}" class="w-24 h-24 rounded-full mx-auto mb-4 border-4 border-gray-800 group-hover:border-yellow-500 transition" alt="${p.name}">
-                        <h3 class="text-xl font-gaming font-bold uppercase">${p.name}</h3>
+                        <img src="${m.avatar}" class="w-24 h-24 rounded-full mx-auto mb-4 border-4 border-gray-800 group-hover:border-yellow-500 transition" alt="${m.nickname}">
+                        <h3 class="text-xl font-gaming font-bold uppercase">${m.nickname}</h3>
                         <p class="text-yellow-400 text-sm uppercase mb-2 italic">Pro Player</p>
                     </div>
-                `;
-
-                // Stats Table
-                statsBody.innerHTML += `
-                    <tr class="hover:bg-yellow-900/20 transition">
-                        <td class="p-4 font-bold uppercase">${p.name}</td>
-                        <td class="p-4 text-center font-gaming text-yellow-400">${p.elo}</td>
-                        <td class="p-4 text-center">${(p.winRate * 100).toFixed(1)}%</td>
-                        <td class="p-4 text-center">${p.kd}</td>
-                    </tr>
                 `;
             });
         }
 
-        function loadSimulationData() {
-            const mockPlayers = [
-                { name: "-ExTaZz_", avatar: "", elo: "", winRate: "", kd: "" },
-                { name: "NoVadyM", avatar: "", elo: , winRate: , kd:  },
-                { name: "ShoZa", avatar: "", elo: , winRate: , kd:  },
-                { name: "Whrite", avatar: "", elo: , winRate: , kd:  },
-                { name: "-mqxime-", avatar: "", elo: , winRate: , kd:  },
+        function loadSimulation() {
+            const mock = [
+                { nickname: "Player 1", avatar: "" },
+                { nickname: "Player 2", avatar: "" }
             ];
-            renderData(mockPlayers);
+            renderPlayers(mock);
         }
 
         window.onload = init;
