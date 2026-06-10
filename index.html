@@ -98,31 +98,6 @@
         </div>
     </section>
 
-    <!-- Matches Section -->
-    <section id="matches" class="py-20 px-6 max-w-7xl mx-auto text-center">
-        <h2 class="text-4xl font-gaming mb-16 italic underline decoration-yellow-500 underline-offset-8 uppercase tracking-tighter">Prochaines Rencontres</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto text-left">
-            <!-- Match 1 -->
-            <div class="card-gradient p-6 rounded-lg border-l-4 border-yellow-500 flex justify-between items-center shadow-xl transition hover:scale-105 duration-300">
-                <div class="text-center w-1/3 font-bold text-xl uppercase italic">Vizeo</div>
-                <div class="text-center w-1/3">
-                    <span class="block text-xs text-gray-500 mb-2 uppercase font-gaming">15 Octobre - 20:00</span>
-                    <span class="bg-yellow-900 px-3 py-1 rounded text-sm font-gaming italic text-white">VS</span>
-                </div>
-                <div class="text-center w-1/3 font-bold text-xl text-gray-400 uppercase">Team Liquid</div>
-            </div>
-            <!-- Match 2 -->
-            <div class="card-gradient p-6 rounded-lg border-l-4 border-yellow-500 flex justify-between items-center shadow-xl transition hover:scale-105 duration-300">
-                <div class="text-center w-1/3 font-bold text-xl uppercase italic">Vizeo</div>
-                <div class="text-center w-1/3">
-                    <span class="block text-xs text-gray-500 mb-2 uppercase font-gaming">22 Octobre - 18:00</span>
-                    <span class="bg-yellow-900 px-3 py-1 rounded text-sm font-gaming italic text-white">VS</span>
-                </div>
-                <div class="text-center w-1/3 font-bold text-xl text-gray-400 uppercase">G2 Esports</div>
-            </div>
-        </div>
-    </section>
-
     <!-- Footer -->
     <footer class="bg-black py-10 border-t border-yellow-900 text-center">
         <div class="text-2xl font-gaming font-bold text-yellow-400 mb-4 uppercase tracking-widest">VIZEO</div>
@@ -160,7 +135,6 @@
                 updateStatus(true);
 
             } catch (error) {
-                console.warn("API Error: Switching to simulation mode", error);
                 loadSimulationData();
                 updateStatus(false);
             }
@@ -201,7 +175,7 @@
                 { name: "NoVadyM", avatar: "", elo: , winRate: , kd:  },
                 { name: "ShoZa", avatar: "", elo: , winRate: , kd:  },
                 { name: "Whrite", avatar: "", elo: , winRate: , kd:  },
-                { name: "-mqxime-", avatar: "", elo: , winRate: , kd:  },
+                { name: "-mqxime-", avatar: "", elo: , winRate: , kd:  }
             ];
             renderData(mockPlayers);
         }
