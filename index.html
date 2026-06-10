@@ -23,16 +23,14 @@
             <li><a href="#roster" class="hover:text-yellow-400 transition">Équipe</a></li>
             <li><a href="#matches" class="hover:text-yellow-400 transition">Matchs</a></li>
         </ul>
-        <button class="bg-yellow-500 hover:bg-yellow-600 text-black px-4 py-2 rounded font-bold uppercase text-sm transition">Recrutement</button>
     </nav>
 
     <section id="home" class="relative h-[70vh] flex items-center justify-center overflow-hidden border-b border-yellow-900 text-center px-4">
         <div class="absolute inset-0 z-0 opacity-30 grayscale">
-            <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=1350&q=80" class="w-full h-full object-cover">
+            <img src="https://distribution.faceit-cdn.net/images/c6e899fa-8e39-48f6-9e1b-ebbea950ca7b.jpg" class="w-full h-full object-cover">
             <div class="absolute inset-0 bg-gradient-to-t from-[#0a0a0c] via-transparent to-transparent"></div>
         </div>
         <div class="relative z-10">
-            <!-- Logo de l'équipe récupéré dynamiquement -->
             <img id="team-logo" src="" class="w-32 h-32 rounded-full mx-auto mb-6 border-4 border-yellow-500 shadow-lg hidden">
             <h1 class="text-6xl md:text-8xl font-gaming font-bold mb-4 italic uppercase"><span id="team-name">Vizeo</span> <span class="text-yellow-500">Esport</span></h1>
             <p class="text-lg text-gray-400 tracking-widest uppercase mb-8">Elite Competitive Division</p>
@@ -59,18 +57,12 @@
 
                 const data = await response.json();
 
-                // 1. Affichage du nom et logo de l'équipe
                 document.getElementById('team-name').innerText = data.name;
                 const logoImg = document.getElementById('team-logo');
                 logoImg.src = data.avatar;
                 logoImg.classList.remove('hidden');
 
-                // 2. Affichage des joueurs (Utilisation de nickname et avatar)
                 renderPlayers(data.members);
-
-            } catch (error) {
-                console.error("Erreur:", error);
-                loadSimulation();
             }
         }
 
