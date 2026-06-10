@@ -100,6 +100,117 @@
     </footer>
 
     <script>
-        // MATCHS (Manuels car non disponibles via l'API Faceit)
-        const LAST_MATCHES = [
+const PLAYER_STATS = {
+    "Squ4lli": { role: "AWPer", rating: "1.25", kd: "1.40" },
+    "-ExTaZz_": { role: "Entry Fragger", rating: "1.18", kd: "1.22" },
+    "SoLayers": { role: "IGL", rating: "1.05", kd: "1.01" },
+    "TrD__": { role: "Support", rating: "1.10", kd: "1.15" },
+    "-mqxime-": { role: "Lurker", rating: "1.20", kd: "1.31" },
+    "ShoZa": { role: "Rifler", rating: "1.12", kd: "1.18" },
+    "Whrite": { role: "Entry Fragger", rating: "1.08", kd: "1.10" },
+    "nwk-": { role: "AWPer", rating: "1.15", kd: "1.20" },
+    "NoVadyM": { role: "Rifler", rating: "1.02", kd: "0.98" },
+};
+
+const LAST_MATCHES = [
+    { opponent: "Team Liquid", score: "16 - 12", result: "Win", date: "10 Oct" },
+    { opponent: "G2 Esports", score: "13 - 16", result: "Loss", date: "05 Oct" },
+];
+
+const NEXT_MATCHES = [
+    { opponent: "FaZe Clan", time: "20:00", date: "25 Oct", event: "Faceit Cup" },
+];
+
+async function init() {
+    try {
+        const response = await fetch('/api/faceit');
+        if (!response.ok) throw new Error("Erreur serveur");
+
+        const data = await response.json();
+
+        const team = data.teamInfo || {};
+        const members = team.members || [];
+
+        document.getElementById('team-name').innerText = team.name || "Vizeo";
+
+        const logoImg = document.getElementById('team-logo');
+        if (team.avatar) {
+            logoImg.src = team.avatar;
+            logoImg.classList.remove('hidden');
+        }
+
+        const stats = data.globalStats || {};
+
+        document.getElementById('global-winrate').innerText =
+            stats.win_rate ? `${Number(stats.win_rate).toFixed(1)}%` : "--%";
+
+        document.getElementById('global-matches').innerText =
+            stats.matches_played || "--";
+
+        document.getElementById('global-rank').innerText =
+            stats.rank || "N/A";
+
+        renderRoster(members);
+        renderStatsTable(members);
+        renderMatches();
+
+    } catch (error) {
+        console.error("Critical Error:", error);
+    }
+}
+
+function renderRoster(members) {
+    const container = document.getElementById('player-container');
+
+    container.innerHTML = members.map(m => {
+        const s = PLAYER_STATS[m.nickname] || { role: "Pro Player" };
+
+        return `
+            <div class="card-gradient p-4 rounded-xl text-center border border-transparent hover:border-yellow-500 transition">
+                <img src="${m.avatar || ''}" class="w-24 h-24 rounded-full mx-auto mb-4 border-4 border-gray-800">
+                <h3 class="text-xl font-gaming font-bold uppercase">${m.nickname}</h3>
+                <p class="text-yellow-400 text-sm uppercase italic">${s.role}</p>
+            </div>
+        `;
+    }).join('');
+}
+
+function renderStatsTable(members) {
+    const tbody = document.getElementById('stats-body');
+
+    tbody.innerHTML = members.map(m => {
+        const s = PLAYER_STATS[m.nickname] || { role: "Player", rating: "-", kd: "-" };
+
+        return `
+            <tr class="hover:bg-yellow-900/20 transition">
+                <td class="p-4 font-bold uppercase">${m.nickname}</td>
+                <td class="p-4 text-center">${s.role}</td>
+                <td class="p-4 text-center text-yellow-400">${s.rating}</td>
+                <td class="p-4 text-center">${s.kd}</td>
+            </tr>
+        `;
+    }).join('');
+}
+
+function renderMatches() {
+    document.getElementById('last-matches').innerHTML = LAST_MATCHES.map(m => `
+        <div class="card-gradient p-4 rounded-lg border-l-4 ${m.result === 'Win' ? 'border-green-500' : 'border-red-500'} flex justify-between">
+            <span class="font-bold uppercase">${m.opponent}</span>
+            <span class="font-gaming text-yellow-400">${m.score}</span>
+            <span class="text-xs text-gray-500">${m.date}</span>
+        </div>
+    `).join('');
+
+    document.getElementById('next-matches').innerHTML = NEXT_MATCHES.map(m => `
+        <div class="card-gradient p-4 rounded-lg border-l-4 border-yellow-500 flex justify-between">
+            <span class="font-bold uppercase">${m.opponent}</span>
+            <span class="text-xs text-gray-400 italic">${m.event}</span>
+            <span class="font-gaming text-yellow-400">${m.date} ${m.time}</span>
+        </div>
+    `).join('');
+}
+
+window.onload = init;
+</script>
+</body>
 </html>
