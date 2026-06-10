@@ -74,25 +74,20 @@
         </div>
     </section>
 
-    <!-- Performance Section -->
-    <section id="stats" class="py-20 bg-[#0f172a] border-y border-yellow-900 px-6 text-center">
-        <div class="max-w-7xl mx-auto">
-            <h2 class="text-4xl font-gaming mb-16 italic underline decoration-yellow-500 underline-offset-8 uppercase tracking-tighter">Suivi des Performances</h2>
-            
-            <div class="overflow-x-auto">
-                <table class="w-full text-left border-collapse bg-black/40 rounded-lg overflow-hidden">
-                    <thead>
-                        <tr class="bg-yellow-900 text-white uppercase font-gaming text-sm">
-                            <th class="p-4">Joueur</th>
-                            <th class="p-4 text-center">Elo Faceit</th>
-                            <th class="p-4 text-center">Win Rate</th>
-                            <th class="p-4 text-center">K/D Ratio</th>
-                        </tr>
-                    </thead>
-                    <tbody id="stats-body" class="divide-y divide-yellow-900/50">
-                        <!-- Stats will be injected by JS -->
-                    </tbody>
-                </table>
+    <!-- Team Stats Dashboard -->
+    <section id="team-stats" class="py-10 px-6 max-w-7xl mx-auto">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center font-gaming">
+            <div class="card-gradient p-6 rounded-xl border border-yellow-900 shadow-lg">
+                <p class="text-gray-400 uppercase text-sm mb-2">Win Rate</p>
+                <h3 id="stat-winrate" class="text-4xl font-bold text-yellow-500">--%</h3>
+            </div>
+            <div class="card-gradient p-6 rounded-xl border border-yellow-900 shadow-lg">
+                <p class="text-gray-400 uppercase text-sm mb-2">Matches Joués</p>
+                <h3 id="stat-matches" class="text-4xl font-bold text-yellow-500">--</h3>
+            </div>
+            <div class="card-gradient p-6 rounded-xl border border-yellow-900 shadow-lg">
+                <p class="text-gray-400 uppercase text-sm mb-2">Rang Équipe</p>
+                <h3 id="stat-rank" class="text-4xl font-bold text-yellow-500">--</h3>
             </div>
         </div>
     </section>
@@ -114,25 +109,34 @@
          */
         async function init() {
             try {
-                // Appel au tunnel serveur créé dans api/faceit.js
                 const response = await fetch('/api/faceit');
-                if (!response.ok) throw new Error("Erreur lors de la récupération");
-
-                const teamData = await response.json();
-                
-                // On transforme les membres en format utilisable pour le rendu
-                // Note: Pour avoir Elo/KD, il faudrait faire un appel /players/{id} dans faceit.js
-                // Ici on utilise les données disponibles ou simulées pour l'exemple
-                const players = teamData.members.map(m => ({
-                    name: m.player_id, 
-                    avatar: `https://i.pravatar.cc/150?u=${m.player_id}`, 
-                    elo: "Loading...", winRate: "0%", kd: "0"
-                }));
-
-                // Si on a des membres, on tente d'enrichir ou on affiche
-                renderData(players);
+                const data = await response.json();
+        
+                if (data.apiStatus === "DOWN") {
+                    loadSimulationData();
+                    updateStatus(false);
+                    return;
+                }
+        
+                // 1. Mise à jour des Stats Globales de l'équipe
+                if (data.teamStats && data.teamStats.lifetime) {
+                    const stats = data.teamStats.lifetime;
+                    document.getElementById('stat-winrate').innerText = (stats.win_rate * 100).toFixed(1) + "%";
+                    document.getElementById('stat-matches').innerText = stats.matches_played || "0";
+                    document.getElementById('stat-rank').innerText = stats.rank || "N/A";
+                }
+        
+                // 2. Mise à jour du Roster (si disponible)
+                if (data.members) {
+                    const players = data.members.map(m => ({
+                        name: m.player_id, 
+                        avatar: `https://i.pravatar.cc/150?u=${m.player_id}`, 
+                        elo: "...", winRate: 0, kd: 0
+                    }));
+                    renderData(players);
+                }
+        
                 updateStatus(true);
-
             } catch (error) {
                 loadSimulationData();
                 updateStatus(false);
