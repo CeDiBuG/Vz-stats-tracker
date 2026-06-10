@@ -197,24 +197,13 @@
 
         function loadSimulationData() {
             const mockPlayers = [
-                { name: "ZywOoX", avatar: "https://i.pravatar.cc/150?u=1", elo: 3200, winRate: 0.65, kd: 1.4 },
-                { name: "ScreaM_Jr", avatar: "https://i.pravatar.cc/150?u=2", elo: 2800, winRate: 0.58, kd: 1.2 },
-                { name: "Tactix", avatar: "https://i.pravatar.cc/150?u=3", elo: 2400, winRate: 0.52, kd: 1.0 },
-                { name: "Stormy", avatar: "https://i.pravatar.cc/150?u=4", elo: 2600, winRate: 0.60, kd: 1.1 },
-                { name: "Kevlar", avatar: "https://i.pravatar.cc/150?u=5", elo: 2900, winRate: 0.62, kd: 1.3 },
+                { name: "-ExTaZz_", avatar: "", elo: , winRate: , kd:  },
+                { name: "NoVadyM", avatar: "", elo: , winRate: , kd:  },
+                { name: "ShoZa", avatar: "", elo: , winRate: , kd:  },
+                { name: "Whrite", avatar: "", elo: , winRate: , kd:  },
+                { name: "-mqxime-", avatar: "", elo: , winRate: , kd:  },
             ];
             renderData(mockPlayers);
-        }
-
-        function updateStatus(isLive) {
-            const badge = document.getElementById('api-status');
-            if (isLive) {
-                badge.innerText = "LIVE API";
-                badge.className = "status-badge bg-green-600 text-white";
-            } else {
-                badge.innerText = "Simulation Mode";
-                badge.className = "status-badge bg-orange-500 text-black";
-            }
         }
 
         window.onload = init;
