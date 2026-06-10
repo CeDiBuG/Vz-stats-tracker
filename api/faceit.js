@@ -13,12 +13,11 @@ export default async function handler(req, res) {
     try {
         console.log(`Appel Faceit pour l'équipe ${TEAM_ID}...`);
 
-        const response = await fetch(`https://api.faceit.com/teams/${TEAM_ID}`, {
+        const response = await fetch(`https://open.faceit.com/data/v4/teams/${TEAM_ID}`, {
             method: 'GET',
             headers: { 
                 "Authorization": `Bearer ${API_KEY}`,
-                "Accept": "application/json",
-                "Content-Type": "application/json"
+                "Accept": "application/json"
             }
         });
 
