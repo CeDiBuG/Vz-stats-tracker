@@ -1,26 +1,41 @@
 // api/faceit.js
 export default async function handler(req, res) {
+    console.log("--- Début de la requête Faceit ---");
+
     const API_KEY = process.env.FACEIT_API_KEY;
     const TEAM_ID = "8cf84bd4-eaf8-4cee-95e0-0ae9fc7c7003";
 
+    // Debug : Vérifier si la clé est présente (sans l'afficher entièrement pour la sécurité)
     if (!API_KEY) {
-        return res.status(500).json({ error: "La clé API n'est pas configurée sur Vercel" });
+        console.error("ERREUR: FACEIT_API_KEY est manquante dans les variables d'environnement.");
+        return res.status(500).json({ error: "Clé API manquante sur le serveur" });
+    } else {
+        console.log("Clé API détectée : " + API_KEY.substring(0, 5) + "...");
     }
 
     try {
+        console.log(`Appel API Faceit pour l'équipe ${TEAM_ID}...`);
+        
         const response = await fetch(`https://api.faceit.com/teams/${TEAM_ID}`, {
-            headers: { "Authorization": `Bearer ${API_KEY}` }
+            headers: { 
+                "Authorization": `Bearer ${API_KEY}`,
+                "Accept": "application/json"
+            }
         });
 
         if (!response.ok) {
-            throw new Error(`Faceit API responded with status ${response.status}`);
+            const errorText = await response.text();
+            console.error(`ERREUR FACEIT API: Statut ${response.status} - ${errorText}`);
+            return res.status(response.status).json({ error: `Faceit API Error: ${response.status}` });
         }
 
         const data = await response.json();
-
-        // 3. On renvoie les données au site web (index.html)
+        console.log("Succès : Données récupérées !");
+        
         res.status(200).json(data);
+
     } catch (error) {
-        res.status(500).json({ error: "Erreur lors de la récupération des données : " + error.message });
+        console.error("ERREUR CRITIQUE SERVEUR:", error.message);
+        res.status(500).json({ error: "Erreur interne du serveur : " + error.message });
     }
 }
