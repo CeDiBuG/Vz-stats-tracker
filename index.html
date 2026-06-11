@@ -1,186 +1,350 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vizeo | Esport Team</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@300;500;700&display=swap');
-        body { background-color: #0a0a0c; color: #e2e8f0; font-family: 'Rajdhani', sans-serif; scroll-behavior: smooth; }
-        .font-gaming { font-family: 'Orbitron', sans-serif; }
-        .neon-border { box-shadow: 0 0 10px #eab308, 0 0 20px #eab308; border: 1px solid #eab308; }
-        .card-gradient { background: linear-gradient(145deg, #111827, #1f2937); }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vizeo | CS2</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --gold: #D4A017;
+    --gold-dim: #8a6510;
+    --gold-glow: rgba(212,160,23,0.15);
+    --bg: #08080a;
+    --bg2: #0e0e12;
+    --bg3: #14141a;
+    --border: rgba(212,160,23,0.18);
+    --border-strong: rgba(212,160,23,0.4);
+    --text: #e8e6df;
+    --text-muted: #6b6860;
+    --text-dim: #9a9790;
+    --win: #22c55e;
+    --loss: #ef4444;
+  }
+
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; font-size: 15px; overflow-x: hidden; }
+
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 3rem; height: 60px;
+    background: rgba(8,8,10,0.85); backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo { font-family: 'Orbitron', sans-serif; font-size: 1.1rem; font-weight: 700; color: var(--gold); letter-spacing: 0.25em; text-transform: uppercase; }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a { font-size: 0.72rem; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-dim); text-decoration: none; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--gold); }
+  .nav-cta { font-family: 'Orbitron', sans-serif; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); border: 1px solid var(--border-strong); padding: 0.45rem 1.2rem; text-decoration: none; transition: background 0.2s, color 0.2s; }
+  .nav-cta:hover { background: var(--gold); color: #000; }
+
+  #home {
+    position: relative; height: 100vh; display: flex; align-items: center; justify-content: center;
+    text-align: center; overflow: hidden; border-bottom: 1px solid var(--border);
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background-image: url('https://distribution.faceit-cdn.net/images/c6e899fa-8e39-48f6-9e1b-ebbea950ca7b.jpg');
+    background-size: cover; background-position: center;
+    filter: grayscale(1) brightness(0.22); z-index: 0;
+  }
+  .hero-fade { position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 30%, var(--bg) 100%); z-index: 1; }
+  .hero-content { position: relative; z-index: 2; }
+  .hero-eyebrow { font-size: 0.68rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.2rem; }
+  .hero-title { font-family: 'Orbitron', sans-serif; font-size: clamp(4rem, 12vw, 9rem); font-weight: 700; line-height: 0.9; color: #fff; letter-spacing: -0.02em; margin-bottom: 1.8rem; }
+  .hero-title span { color: var(--gold); }
+  .hero-sub { font-size: 0.8rem; letter-spacing: 0.28em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 2.5rem; }
+  .hero-btn { display: inline-block; font-family: 'Orbitron', sans-serif; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); border: 1px solid var(--gold); padding: 0.85rem 2.2rem; text-decoration: none; transition: all 0.25s; }
+  .hero-btn:hover { background: var(--gold); color: #000; }
+
+  section { padding: 6rem 3rem; max-width: 1100px; margin: 0 auto; }
+  .section-label { font-size: 0.65rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.5rem; }
+  .section-title { font-family: 'Orbitron', sans-serif; font-size: clamp(1.4rem, 3vw, 2rem); font-weight: 700; color: #fff; margin-bottom: 0.8rem; }
+  .divider { width: 40px; height: 2px; background: var(--gold); margin-bottom: 3rem; }
+
+  .stat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); margin-bottom: 3rem; }
+  .stat-card { background: var(--bg2); padding: 2rem 1.5rem; text-align: center; }
+  .stat-icon { font-size: 1.1rem; color: var(--gold); margin-bottom: 0.8rem; }
+  .stat-label { font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.5rem; }
+  .stat-value { font-family: 'Orbitron', sans-serif; font-size: 2rem; font-weight: 700; color: #fff; }
+
+  .table-wrap { border: 1px solid var(--border); overflow: hidden; }
+  table { width: 100%; border-collapse: collapse; }
+  thead { background: var(--bg3); }
+  thead th { font-family: 'Orbitron', sans-serif; font-size: 0.6rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-muted); padding: 1rem 1.2rem; text-align: left; border-bottom: 1px solid var(--border-strong); }
+  thead th:not(:first-child) { text-align: center; }
+  tbody tr { border-bottom: 1px solid var(--border); transition: background 0.15s; }
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:hover { background: var(--gold-glow); }
+  tbody td { padding: 0.95rem 1.2rem; font-size: 0.88rem; }
+  tbody td:not(:first-child) { text-align: center; color: var(--text-dim); }
+  .player-cell { display: flex; align-items: center; gap: 0.8rem; }
+  .player-avatar { width: 34px; height: 34px; border-radius: 50%; object-fit: cover; border: 1px solid var(--border); background: var(--bg3); }
+  .player-name { font-weight: 600; color: #fff; font-size: 0.9rem; }
+  .elo-pill { display: inline-block; background: var(--gold-glow); border: 1px solid var(--border-strong); color: var(--gold); font-family: 'Orbitron', sans-serif; font-size: 0.75rem; padding: 0.15rem 0.6rem; font-weight: 700; }
+
+  .roster-section { background: var(--bg2); }
+  .roster-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 1px; background: var(--border); border: 1px solid var(--border); }
+  .player-card { background: var(--bg2); padding: 1.8rem 1.2rem; text-align: center; transition: background 0.2s; }
+  .player-card:hover { background: var(--bg3); }
+  .card-avatar { width: 72px; height: 72px; border-radius: 50%; object-fit: cover; border: 2px solid var(--border-strong); margin: 0 auto 1rem; display: block; background: var(--bg3); }
+  .card-name { font-family: 'Orbitron', sans-serif; font-size: 0.72rem; font-weight: 700; color: #fff; letter-spacing: 0.08em; margin-bottom: 0.3rem; }
+  .card-role { font-size: 0.65rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 1rem; }
+  .card-elo { font-family: 'Orbitron', sans-serif; font-size: 1.1rem; font-weight: 700; color: var(--gold); }
+  .card-elo-label { font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-muted); margin-top: 0.15rem; }
+
+  .matches-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; }
+  .match-col-title { font-family: 'Orbitron', sans-serif; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.2rem; display: flex; align-items: center; gap: 0.6rem; }
+  .match-list { display: flex; flex-direction: column; gap: 1px; background: var(--border); border: 1px solid var(--border); }
+  .match-item { background: var(--bg2); padding: 1rem 1.2rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; transition: background 0.15s; }
+  .match-item:hover { background: var(--bg3); }
+  .match-map { font-size: 0.75rem; font-weight: 600; color: #fff; }
+  .match-opp { font-size: 0.7rem; color: var(--text-dim); margin-top: 0.15rem; }
+  .match-score { font-family: 'Orbitron', sans-serif; font-size: 0.9rem; font-weight: 700; }
+  .score-win { color: var(--win); }
+  .score-loss { color: var(--loss); }
+  .match-badge { font-size: 0.58rem; letter-spacing: 0.12em; text-transform: uppercase; padding: 0.2rem 0.55rem; font-weight: 600; }
+  .badge-win { background: rgba(34,197,94,0.1); color: var(--win); border: 1px solid rgba(34,197,94,0.25); }
+  .badge-loss { background: rgba(239,68,68,0.1); color: var(--loss); border: 1px solid rgba(239,68,68,0.25); }
+  .badge-upcoming { background: var(--gold-glow); color: var(--gold); border: 1px solid var(--border-strong); }
+  .match-date { font-size: 0.65rem; color: var(--text-muted); }
+
+  footer { border-top: 1px solid var(--border); text-align: center; padding: 2rem; font-family: 'Orbitron', sans-serif; font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-muted); }
+
+  #loader { position: fixed; inset: 0; background: var(--bg); display: flex; align-items: center; justify-content: center; z-index: 9999; flex-direction: column; gap: 1rem; transition: opacity 0.4s; }
+  .loader-logo { font-family: 'Orbitron', sans-serif; font-size: 2rem; font-weight: 700; color: var(--gold); letter-spacing: 0.3em; }
+  .loader-bar { width: 120px; height: 1px; background: var(--border); position: relative; overflow: hidden; }
+  .loader-bar::after { content: ''; position: absolute; left: -40%; width: 40%; height: 100%; background: var(--gold); animation: slide 1s linear infinite; }
+  @keyframes slide { to { left: 140%; } }
+
+  @media (max-width: 768px) {
+    nav { padding: 0 1.2rem; }
+    .nav-links { display: none; }
+    section { padding: 3rem 1.2rem; }
+    .stat-grid { grid-template-columns: 1fr; }
+    .matches-grid { grid-template-columns: 1fr; }
+    .hero-title { font-size: 4rem; }
+  }
+</style>
 </head>
-<body class="overflow-x-hidden">
+<body>
 
-    <nav class="flex justify-between items-center p-6 bg-black/80 sticky top-0 z-50 backdrop-blur-md border-b border-yellow-900">
-        <div class="text-2xl font-gaming font-bold text-yellow-400 tracking-widest uppercase">Vizeo</div>
-        <ul class="hidden md:flex space-x-8 font-medium uppercase tracking-tighter">
-            <li><a href="#home" class="hover:text-yellow-400 transition">Accueil</a></li>
-            <li><a href="#roster" class="hover:text-yellow-400 transition">Équipe</a></li>
-            <li><a href="#stats" class="hover:text-yellow-400 transition">Stats</a></li>
-            <li><a href="#matches" class="hover:text-yellow-400 transition">Matchs</a></li>
-        </ul>
-    </nav>
+<div id="loader">
+  <div class="loader-logo">VIZEO</div>
+  <div class="loader-bar"></div>
+</div>
 
-    <section id="home" class="relative h-[70vh] flex items-center justify-center overflow-hidden border-b border-yellow-900 text-center px-4">
-        <div class="absolute inset-0 z-0 opacity-30 grayscale">
-            <img src="https://distribution.faceit-cdn.net/images/c6e899fa-8e39-48f6-9e1b-ebbea950ca7b.jpg" class="w-full h-full object-cover">
-            <div class="absolute inset-0 bg-gradient-to-t from-[#0a0a0c] via-transparent to-transparent"></div>
+<nav>
+  <div class="nav-logo">Vizeo</div>
+  <ul class="nav-links">
+    <li><a href="#home">Accueil</a></li>
+    <li><a href="#stats">Stats</a></li>
+    <li><a href="#roster">Roster</a></li>
+    <li><a href="#matches">Matchs</a></li>
+  </ul>
+  <a href="https://www.faceit.com/fr/teams/8cf84bd4-eaf8-4cee-95e0-0ae9fc7c7003/leagues" class="nav-cta" target="_blank">Faceit VIZEO</a>
+</nav>
+
+<div id="home">
+  <div class="hero-bg"></div>
+  <div class="hero-fade"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">Counter-Strike 2 &mdash; Elite Division</p>
+    <h1 class="hero-title">VIZ<span>EO</span></h1>
+    <p class="hero-sub">Precision. Strategy. Domination.</p>
+    <a href="#roster" class="hero-btn">Voir le Roster</a>
+  </div>
+</div>
+
+<section id="stats">
+  <p class="section-label">Performances</p>
+  <h2 class="section-title">Stats Globales</h2>
+  <div class="divider"></div>
+  <div class="stat-grid">
+    <div class="stat-card">
+      <div class="stat-icon"><i class="fas fa-trophy"></i></div>
+      <div class="stat-label">Win Rate</div>
+      <div class="stat-value" id="global-winrate">—</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon"><i class="fas fa-crosshairs"></i></div>
+      <div class="stat-label">Matches joués</div>
+      <div class="stat-value" id="global-matches">—</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon"><i class="fas fa-crown"></i></div>
+      <div class="stat-label">Rang équipe</div>
+      <div class="stat-value" id="global-rank">—</div>
+    </div>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Joueur</th>
+          <th>ELO Faceit</th>
+          <th>Win Rate</th>
+          <th>K/D</th>
+        </tr>
+      </thead>
+      <tbody id="stats-body"></tbody>
+    </table>
+  </div>
+</section>
+
+<section id="roster" class="roster-section" style="max-width: 100%; padding: 6rem 0;">
+  <div style="max-width: 1100px; margin: 0 auto; padding: 0 3rem;">
+    <p class="section-label">Équipe</p>
+    <h2 class="section-title">Le Roster</h2>
+    <div class="divider"></div>
+    <div class="roster-grid" id="player-container"></div>
+  </div>
+</section>
+
+<section id="matches">
+  <p class="section-label">Compétition</p>
+  <h2 class="section-title">Matchs</h2>
+  <div class="divider"></div>
+  <div class="matches-grid">
+    <div>
+      <div class="match-col-title"><i class="fas fa-history"></i> Derniers résultats</div>
+      <div class="match-list" id="last-matches"></div>
+    </div>
+    <div>
+      <div class="match-col-title"><i class="fas fa-calendar-alt"></i> Prochains défis</div>
+      <div class="match-list" id="next-matches"></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  Vizeo Gaming &copy; 2025 &mdash; Powered by Faceit API
+</footer>
+
+<script>
+  function renderLastMatches(matches) {
+    const el = document.getElementById("last-matches");
+    if (!matches?.length) {
+      el.innerHTML = `<div class="match-item" style="color:var(--text-muted);font-size:0.8rem">Aucun match trouvé</div>`;
+      return;
+    }
+    el.innerHTML = matches.map(m => `
+      <div class="match-item">
+        <div style="min-width:0;flex:1">
+          <div class="match-map">${m.map}</div>
+          <div class="match-opp">vs. ${m.opponent}</div>
+          <div class="match-date" style="margin-top:0.2rem;font-size:0.6rem;color:var(--text-muted)">${m.league}</div>
         </div>
-        <div class="relative z-10">
-            <img id="team-logo" src="" class="w-32 h-32 rounded-full mx-auto mb-6 border-4 border-yellow-500 shadow-lg hidden">
-            <h1 class="text-6xl md:text-8xl font-gaming font-bold mb-4 italic uppercase"><span id="team-name">Vizeo</span></h1>
-            <p class="text-lg text-gray-400 tracking-widest uppercase mb-8">Counter-Strike 2 Elite Division</p>
-            <a href="#roster" class="neon-border px-8 py-3 bg-transparent text-yellow-400 font-gaming font-bold hover:bg-yellow-500 hover:text-black transition duration-300 uppercase">Voir le Roster</a>
+        <div class="match-score ${m.result === 'win' ? 'score-win' : 'score-loss'}">${m.score}</div>
+        <div style="text-align:right;flex-shrink:0">
+          <span class="match-badge ${m.result === 'win' ? 'badge-win' : 'badge-loss'}">${m.result === 'win' ? 'Victoire' : 'Défaite'}</span>
+          <div class="match-date" style="margin-top:0.3rem">${m.date}</div>
         </div>
-    </section>
+      </div>
+    `).join('');
+  }
 
-    <!-- STATS GLOBAL SECTION -->
-    <section id="stats" class="py-20 px-6 max-w-7xl mx-auto text-center">
-        <h2 class="text-4xl font-gaming mb-16 italic underline decoration-yellow-500 underline-offset-8 uppercase tracking-tighter">Performances Globales</h2>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
-            <div class="card-gradient p-8 rounded-xl border border-yellow-900 shadow-lg">
-                <i class="fas fa-trophy text-4xl text-yellow-500 mb-4"></i>
-                <p class="text-gray-400 uppercase text-sm">Win Rate Team</p>
-                <h3 id="global-winrate" class="text-4xl font-gaming font-bold text-white">--%</h3>
-            </div>
-            <div class="card-gradient p-8 rounded-xl border border-yellow-900 shadow-lg">
-                <i class="fas fa-gamepad text-4xl text-yellow-500 mb-4"></i>
-                <p class="text-gray-400 uppercase text-sm">Matches Joués</p>
-                <h3 id="global-matches" class="text-4xl font-gaming font-bold text-white">--</h3>
-            </div>
-            <div class="card-gradient p-8 rounded-xl border border-yellow-900 shadow-lg">
-                <i class="fas fa-crown text-4xl text-yellow-500 mb-4"></i>
-                <p class="text-gray-400 uppercase text-sm">Rang Équipe</p>
-                <h3 id="global-rank" class="text-4xl font-gaming font-bold text-white">--</h3>
-            </div>
+  function renderNextMatches(matches) {
+    const el = document.getElementById("next-matches");
+    if (!matches?.length) {
+      el.innerHTML = `<div class="match-item" style="color:var(--text-muted);font-size:0.8rem">Aucun match planifié</div>`;
+      return;
+    }
+    el.innerHTML = matches.map(m => `
+      <div class="match-item">
+        <div style="min-width:0;flex:1">
+          <div class="match-map">${m.map}</div>
+          <div class="match-opp">vs. ${m.opponent}</div>
+          <div class="match-date" style="margin-top:0.2rem;font-size:0.6rem;color:var(--text-muted)">${m.league}</div>
         </div>
+        <span class="match-badge badge-upcoming">À venir</span>
+        <div class="match-date" style="flex-shrink:0">${m.date}</div>
+      </div>
+    `).join('');
+  }
 
-        <!-- Individual Table -->
-        <div class="overflow-x-auto">
-            <table class="w-full text-left border-collapse bg-black/40 rounded-lg overflow-hidden shadow-2xl">
-                <thead class="bg-yellow-900 text-white uppercase font-gaming text-sm">
-                    <tr>
-                        <th class="p-4">Joueur</th>
-                        <th class="p-4 text-center">Elo Faceit</th>
-                        <th class="p-4 text-center">Win Rate</th>
-                        <th class="p-4 text-center">K/D Ratio</th>
-                    </tr>
-                </thead>
-                <tbody id="stats-body" class="divide-y divide-yellow-900/50"></tbody>
-            </table>
-        </div>
-    </section>
-
-    <section id="roster" class="py-20 px-6 max-w-7xl mx-auto text-center bg-[#0d0d10]">
-        <h2 class="text-4xl font-gaming mb-16 italic underline decoration-yellow-500 underline-offset-8 uppercase tracking-tighter">Le Roster</h2>
-        <div id="player-container" class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6"></div>
-    </section>
-
-    <section id="matches" class="py-20 px-6 max-w-7xl mx-auto text-center">
-        <h2 class="text-4xl font-gaming mb-16 italic underline decoration-yellow-500 underline-offset-8 uppercase tracking-tighter">Matchs</h2>
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 text-left">
-            <div>
-                <h3 class="text-2xl font-gaming mb-6 uppercase text-yellow-500"><i class="fas fa-history mr-2"></i>Derniers Résultats</h3>
-                <div id="last-matches" class="space-y-4"></div>
-            </div>
-            <div>
-                <h3 class="text-2xl font-gaming mb-6 uppercase text-yellow-500"><i class="fas fa-calendar-alt mr-2"></i>Prochains Défis</h3>
-                <div id="next-matches" class="space-y-4"></div>
-            </div>
-        </div>
-    </section>
-
-    <footer class="bg-black py-10 border-t border-yellow-900 text-center text-gray-600 uppercase text-xs font-gaming">
-        Vizeo Gaming &copy; 2023 - Powered by Faceit API
-    </footer>
-
-    <script>
-const PLAYER_STATS = {
-    "Squ4lli": { role: "AWPer" },
-    "-ExTaZz_": { role: "Entry Fragger" },
-    "SoLayers": { role: "IGL" },
-    "TrD__": { role: "Support" },
-    "-mqxime-": { role: "Lurker" }
-};
-
-async function init() {
+  async function loadFaceitData() {
     try {
-        const res = await fetch('/api/faceit');
-        const data = await res.json();
+      const res = await fetch('/api/faceit');
+      if (!res.ok) throw new Error('API error');
+      const data = await res.json();
 
-        const players = data.players || [];
+      if (data.teamInfo?.name) document.title = `${data.teamInfo.name} | CS2`;
 
-        // TEAM
-        document.getElementById('team-name').innerText =
-            data.team?.name || "Team";
+      if (data.globalStats) {
+        const gs = data.globalStats;
+        document.getElementById('global-winrate').textContent = gs.win_rate ? `${gs.win_rate}%` : '—';
+        document.getElementById('global-matches').textContent = gs.matches  || '—';
+        document.getElementById('global-rank').textContent    = gs.ranking  ? `#${gs.ranking}` : '—';
+      }
 
-        const logo = document.getElementById('team-logo');
-        if (data.team?.avatar) {
-            logo.src = data.team.avatar;
-            logo.classList.remove("hidden");
-        }
+      if (data.players?.length) {
+        document.getElementById('stats-body').innerHTML = data.players.map(p => `
+          <tr>
+            <td>
+              <div class="player-cell">
+                <img class="player-avatar" src="${p.avatar || ''}" alt="${p.nickname}" onerror="this.style.opacity='0'">
+                <span class="player-name">${p.nickname}</span>
+              </div>
+            </td>
+            <td><span class="elo-pill">${p.elo}</span></td>
+            <td>${p.winRate ? p.winRate + '%' : '—'}</td>
+            <td>${p.kd || '—'}</td>
+          </tr>
+        `).join('');
 
-        // 🔥 CALCUL STATS GLOBALES
-        const avgElo =
-            players.reduce((a, b) => a + (b.elo || 0), 0) / players.length;
+        document.getElementById('player-container').innerHTML = data.players.map(p => `
+          <div class="player-card">
+            <img class="card-avatar" src="${p.avatar || ''}" alt="${p.nickname}" onerror="this.style.opacity='0'">
+            <div class="card-name">${p.nickname}</div>
+            <div class="card-role">CS2 Player</div>
+            <div class="card-elo">${p.elo}</div>
+            <div class="card-elo-label">ELO</div>
+          </div>
+        `).join('');
+      }
 
-        const avgLevel =
-            players.reduce((a, b) => a + (b.level || 0), 0) / players.length;
-
-        document.getElementById("global-matches").innerText =
-            players.length;
-
-        document.getElementById("global-winrate").innerText =
-            avgElo ? Math.round(avgElo) + " ELO AVG" : "--";
-
-        document.getElementById("global-rank").innerText =
-            "Level " + Math.round(avgLevel);
-
-        render(players);
+      renderLastMatches(data.lastMatches);
+      renderNextMatches(data.nextMatches);
 
     } catch (e) {
-        console.error(e);
+      console.warn('Faceit API indisponible — affichage placeholder');
+      const placeholders = ['Player 1', 'Player 2', 'Player 3', 'Player 4', 'Player 5'];
+
+      document.getElementById('stats-body').innerHTML = placeholders.map(n => `
+        <tr>
+          <td><div class="player-cell"><div class="player-avatar" style="background:var(--bg3)"></div><span class="player-name">${n}</span></div></td>
+          <td><span class="elo-pill">—</span></td><td>—</td><td>—</td>
+        </tr>
+      `).join('');
+
+      document.getElementById('player-container').innerHTML = placeholders.map(n => `
+        <div class="player-card">
+          <div class="card-avatar" style="background:var(--bg3)"></div>
+          <div class="card-name">${n}</div>
+          <div class="card-role">CS2 Player</div>
+          <div class="card-elo">—</div>
+          <div class="card-elo-label">ELO</div>
+        </div>
+      `).join('');
+
+      renderLastMatches([]);
+      renderNextMatches([]);
     }
-}
+  }
 
-function render(players) {
-    const container = document.getElementById("player-container");
-    const table = document.getElementById("stats-body");
-
-    container.innerHTML = "";
-    table.innerHTML = "";
-
-    players.forEach(p => {
-        const role = PLAYER_STATS[p.nickname]?.role || "Player";
-
-        // CARDS
-        container.innerHTML += `
-            <div class="card-gradient p-4 rounded-xl text-center border border-yellow-900">
-                <img src="${p.avatar}" class="w-24 h-24 rounded-full mx-auto mb-3">
-                <h3 class="font-bold uppercase">${p.nickname}</h3>
-                <p class="text-yellow-400 text-sm">${role}</p>
-                <p class="text-gray-400 text-sm">ELO: ${p.elo}</p>
-            </div>
-        `;
-
-        // TABLE
-        table.innerHTML += `
-            <tr class="hover:bg-yellow-900/10">
-                <td class="p-3 font-bold">${p.nickname}</td>
-                <td class="p-3 text-center">${role}</td>
-                <td class="p-3 text-center text-yellow-400">${p.elo}</td>
-                <td class="p-3 text-center">${p.level}</td>
-            </tr>
-        `;
-    });
-}
-
-window.onload = init;
+  window.addEventListener('DOMContentLoaded', () => {
+    loadFaceitData();
+    setTimeout(() => {
+      const loader = document.getElementById('loader');
+      loader.style.opacity = '0';
+      setTimeout(() => loader.remove(), 400);
+    }, 800);
+  });
 </script>
 </body>
 </html>
